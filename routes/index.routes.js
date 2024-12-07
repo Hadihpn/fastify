@@ -1,12 +1,39 @@
 const fastify = require("fastify");
-
-const homeRoutes = (fastify, options, done) => {
-  fastify.get("/", (req, reply) => {
+const indexRoute = {
+  schema: {
+    tags: ["Home"],
+    security: [
+      {
+        apiKey:[],
+      },
+    ],
+    response: {
+      200: {
+        type: "object",
+        properties: {
+          header: {
+            type: "object",
+            properties: {
+              authorization: {
+                type: "string",
+              },
+            },
+          },
+          message: { type: "string" },
+        },
+      },
+    },
+  },
+  handler: (req, reply) => {
     reply.send({
-      message: "Hello Fastify",
+      header: req.headers,
+      message: "hello fastify",
     });
-  });
-  done()
+  },
+};
+const homeRoutes = (fastify, options, done) => {
+  fastify.get("/", indexRoute);
+  done();
 };
 module.exports = {
   homeRoutes,

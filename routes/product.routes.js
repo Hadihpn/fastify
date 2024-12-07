@@ -14,6 +14,16 @@ const Product = {
 
 const getProductItem = {
   schema: {
+    tags: ["Product"],
+    params: {
+      type: "object",
+      properties: {
+        id: {
+          type: "string",
+          description: "the id of product",
+        },
+      },
+    },
     response: {
       200: Product,
     },
@@ -23,6 +33,12 @@ const getProductItem = {
 
 const getAllProductItem = {
   schema: {
+    tags: ["Product"],
+    security: [
+      {
+        apiKey: {},
+      },
+    ],
     response: {
       200: {
         type: "array",
@@ -32,11 +48,11 @@ const getAllProductItem = {
   },
   handler: getAllProducts,
 };
-const productRoutes=  (fastify, options, done)=> {
+const productRoutes = (fastify, options, done) => {
   fastify.get("/", getAllProductItem);
   fastify.get("/:id", getProductItem);
   done();
-}
+};
 module.exports = {
-    productRoutes
-}
+  productRoutes,
+};
