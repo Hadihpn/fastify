@@ -9,6 +9,7 @@ const {
 const { sequelize } = require("./config/sequelize.config");
 const { authRoutes } = require("./routes/auth.routes");
 const { fastifyBcrypt } = require("fastify-bcrypt");
+const fastifyJwt = require("@fastify/jwt");
 
 require("dotenv").config();
 const fastify = require("fastify")({
@@ -17,6 +18,9 @@ const fastify = require("fastify")({
 fastify.register(fastifyBcrypt, {
   saltWorkFactor: 12,
 });
+fastify.register(fastifyJwt,{
+  secret:"fastify5464645487"
+})
 fastify.register(fastifySwagger, fastifySwaggerConfig);
 fastify.register(fastifySwaggerUi, fastifySwaggerUiConfig);
 fastify.register(homeRoutes);

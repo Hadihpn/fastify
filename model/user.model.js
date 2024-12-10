@@ -31,6 +31,10 @@ USER.init(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    accessToken: {
+      type: DataTypes.STRING,
+      defaultValue:""
+    },
   },
   { sequelize, name: "users" }
 );
