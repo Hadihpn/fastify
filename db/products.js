@@ -1,19 +1,17 @@
-const Products = [
-    {
-        id:1,
-        name:"noteBook1"
-    },
-    {
-        id:2,
-        name:"noteBook2"
-    },
-    {
-        id:3,
-        name:"noteBook3"
-    },
-    {
-        id:4,
-        name:"noteBook4"
-    }
+export const products = [{
+    id: 1,
+    name: "noteBook"
+},
+{
+    id: 2,
+    name: "pen"
+},
+{
+    id: 3,
+    name: "pencil"
+},
+{
+    id: 4,
+    name: "eraser"
+},
 ]
-module.exports = Products

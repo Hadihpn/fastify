@@ -1,44 +1,67 @@
-const { Model, DataTypes } = require("sequelize");
-const { sequelize } = require("../config/sequelize.config");
+import { DataTypes } from "sequelize";
+import {
+    sequelize
+} from "../config/sequelize.config.js";
 
-class USER extends Model {}
-USER.init(
-  {
+export const User = sequelize.define('User', {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
     },
-    firstName: {
-      type: DataTypes.STRING,
+    first_name: {
+        type: DataTypes.STRING,
     },
-    lastName: {
-      type: DataTypes.STRING,
+    last_name: {
+        type: DataTypes.STRING,
     },
-    userName: {
-      type: DataTypes.STRING,
-      unique: true,
-      allowNull: false,
+    username: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false
     },
     password: {
-      type: DataTypes.STRING,
-      allowNull: false,
+        type: DataTypes.STRING,
+        allowNull: false
     },
-    birthdate: {
-      type: DataTypes.DATE,
+    active: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     },
-    isActive: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
+    birthday: {
+        type: DataTypes.DATE,
     },
     accessToken: {
-      type: DataTypes.STRING,
-      defaultValue:""
+        type: DataTypes.STRING,
+        defaultValue: ""
+    }
+});
+export const UserDetail = sequelize.define("UserDetail", {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
     },
-  },
-  { sequelize, name: "users" }
-);
-USER.sync({ force: true });
-module.exports ={
-    USER
-}
+    address: {
+        type: DataTypes.STRING,
+    },
+    latitudes: {
+        type: DataTypes.STRING
+    },
+    longitudes: {
+        type: 
+        DataTypes.STRING
+    },
+    UserId: {
+        type: DataTypes.INTEGER
+    }
+})
+User.hasOne(UserDetail);
+UserDetail.belongsTo(User)
+
+// User.sync({alter: true}).then(() => {
+//     console.log("User Sync completed");
+// })
+// UserDetail.sync({alter: true}).then(() => {
+//     console.log("UserDetail Sync completed");
+// })

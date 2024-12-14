@@ -1,58 +1,82 @@
-const { getOneProduct, getAllProducts } = require("../handler/product.handler");
+import {
+  getAllProducts,
+  getOneProduct
+} from "../handler/product.handler.js"
+import {
+  GetUserMiddleware
+} from "../utils/get-user.js"
 
 const Product = {
-  type: "object",
+  type: 'object',
   properties: {
-    id: {
-      type: "integer",
-    },
-    name: {
-      type: "string",
-    },
-  },
-};
-
-const getProductItem = {
-  schema: {
-    tags: ["Product"],
-    params: {
-      type: "object",
-      properties: {
-        id: {
-          type: "string",
-          description: "the id of product",
-        },
+      id: {
+          type: 'integer'
       },
-    },
-    response: {
-      200: Product,
-    },
+      name: {
+          type: 'string'
+      }
+  }
+}
+const getOneProductItem = {
+  schema: {
+      tags: ['products'],
+      security: [{
+          apiKey: []
+      }],
+      summary: "some description about route",
+      params: {
+          type: "object",
+          properties: {
+              id: {
+                  type: "string",
+                  description: "the id of product"
+              }
+          },
+      },
+      response: {
+          200: Product
+      }
   },
   handler: getOneProduct,
-};
-
-const getAllProductItem = {
+  preHandler: [GetUserMiddleware]
+}
+const getProductsItem = {
   schema: {
-    tags: ["Product"],
-    security: [
-      {
-        apiKey: {},
-      },
-    ],
-    response: {
-      200: {
-        type: "array",
-        items: Product,
-      },
-    },
+      tags: ['products'],
+      security: [{
+          apiKey: []
+      }],
+      response: {
+          200: {
+              type: "object",
+              properties: {
+                  products: {
+                      type: 'array',
+                      items: Product
+                  },
+                  user: {
+                      type: "object",
+                      properties: {
+                          id: {type: "integer"},
+                          first_name: {type: "string"},
+                          last_name: {type: "string"},
+                          username: {type: "string"},
+                          accessToken: {type: "string"},
+                      }
+                  }
+              }
+          }
+      }
   },
   handler: getAllProducts,
-};
-const productRoutes = (fastify, options, done) => {
-  fastify.get("/", getAllProductItem);
-  fastify.get("/:id", getProductItem);
-  done();
-};
-module.exports = {
-  productRoutes,
-};
+  preHandler: [GetUserMiddleware]
+}
+
+export default function productRoutes(fastify, options, done) {
+  //get one product
+  // fastify.addHook("onRequest", (request) => request.jwtVerify())
+  fastify.get("/", getProductsItem)
+  //get all products
+  fastify.get("/:id", getOneProductItem)
+  done()
+}

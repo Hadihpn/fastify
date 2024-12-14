@@ -1,62 +1,58 @@
-const { registerHandler, loginHandler } = require("../handler/auth.handler");
-
-const register = {
-  schema: {
-    tags: ["Auth"],
-    body: {
-      type: "object",
-      properties: {
-        firstName: {
-          type: "string",
+import { loginHandler, registerHandler } from "../handler/auth.handler.js";
+const registerRoute = {
+    schema: {
+        tags: ['authentication'],
+        summary: "some description about route",
+        body: {
+            type: "object",
+            properties: {
+                first_name: {
+                    type: "string",
+                },
+                last_name: {
+                    type: "string",
+                },
+                username: {
+                    type: "string",
+                },
+                password: {
+                    type: "string",
+                }
+            },
         },
-        lastName: {
-          type: "string",
-        },
-        userName: {
-          type: "string",
-        },
-        password: {
-          type: "string",
-        },
-      },
+        response: {
+            201: {
+                type: "object"
+            }
+        }
     },
-    response: {
-      200: {
-        message:"user created succesfully"
-      },
-    },
-  },
-  handler: registerHandler,
-};
-const login = {
-  schema: {
-    tags: ["Auth"],
-    body: {
-      type: "object",
-      properties: {
-        userName: {
-          type: "string",
+    handler: registerHandler
+}
+const loginRoute = {
+    schema: {
+        tags: ['authentication'],
+        summary: "some description about route",
+        body: {
+            type: "object",
+            properties: {
+                username: {
+                    type: "string",
+                },
+                password: {
+                    type: "string",
+                }
+            },
         },
-        password: {
-          type: "string",
-        },
-      },
+        response: {
+            199: {
+                type: "object"
+            }
+        }
     },
-    response: {
-      200: {
-        message:"logged in succesfully"
-      },
-    },
-  },
-  handler: loginHandler,
-};
-
-
-const authRoutes = (fastify, options, done) => {
-  fastify.post("/register", register);
-  fastify.post("/login", login);
-  done();
-};
-module.exports = {
-  authRoutes,
-};
+    handler: loginHandler
+}
+export default function authRouters(fastify, options, done) {
+    fastify.post("/register", registerRoute)
+    fastify.post("/login", loginRoute)
+    done()
+}

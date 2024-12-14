@@ -1,12 +1,12 @@
-const { Sequelize } = require("sequelize")
-
-const sequelize = new Sequelize("postgres://postgres:HADIh3pn@localhost:5433/fastify")
-const dbConnection = async()=>{
-    await sequelize.authenticate();
-    console.log("connected to postgress succesfully");
-}
-dbConnection();
-
-module.exports = {
-    sequelize
-}
+import { Sequelize } from "sequelize";
+// export const sequelize = new Sequelize("postgres://postgres:root@localhost:5433/fastify");
+export const sequelize = new Sequelize("fastify", "postgres", "root", {
+    host: "localhost",
+    port: 5433,
+    dialect: "postgres"
+});
+// const DBConnection = async () => {
+//     await sequelize.authenticate();
+//     console.log("postgres is connected");
+// }
+// DBConnection()
